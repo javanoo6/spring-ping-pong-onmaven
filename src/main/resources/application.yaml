@@ -1,0 +1,11 @@
+spring:
+  kafka:
+    bootstrap-servers: "localhost:9093"
+    consumer:
+      value-deserializer: "org.springframework.kafka.support.serializer.JsonDeserializer"
+      properties:
+        "[spring.json.value.default.type]": "com.example.javanoo6.webpart.model.GameRecord"
+        "[spring.json.trusted.packages]": "com.example.javanoo6"
+      group-id: "test_topic"
+    producer:
+      value-serializer: "org.springframework.kafka.support.serializer.JsonSerializer"
