@@ -46,9 +46,9 @@ internal class GameImplTest {
         every {
             gameRecordService.saveGame(playerOne, playerTwo, theWinner)
         } returns gameRecord
-        every {
+      /*  every {
             messageProducer.someMethod(gameRecord)
-        } returns Unit
+        } returns Unit*/
         gameImpl.run(playerOne, playerTwo, finalScore = 1)
         verify { gameRecordService.saveGame(playerOne, playerTwo, theWinner) }
     }

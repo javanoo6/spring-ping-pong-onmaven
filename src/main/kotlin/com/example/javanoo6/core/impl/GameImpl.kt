@@ -1,8 +1,11 @@
 package com.example.javanoo6.core.impl
 
+
 import com.example.javanoo6.core.Game
 import com.example.javanoo6.webpart.kafka.MessageProducer
 import com.example.javanoo6.webpart.service.GameRecordService
+import com.example.schemes.GameRecordAvro
+import com.example.schemes.PlayerAvro
 import org.springframework.stereotype.Component
 
 @Component
@@ -68,7 +71,18 @@ class GameImpl(
 
         }
         val gameRecord = gameRecordService.saveGame(playerOne, playerTwo, theWinner)
-        messageProducer.someMethod(gameRecord)
+
+        messageProducer.someMethod(
+            GameRecordAvro(
+                gameRecord.id?.toHexString(),
+                PlayerAvro(gameRecord.firstParticipant?.name, gameRecord.firstParticipant?.score),
+                PlayerAvro(gameRecord.secondParticipant?.name, gameRecord.secondParticipant?.score),
+                PlayerAvro(gameRecord.theWinner.name, gameRecord.theWinner.score),
+                gameRecord.createdDate?.toLocalDate()
+
+            )
+        )
+
 
     }
 

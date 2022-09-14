@@ -1,14 +1,17 @@
 package com.example.javanoo6.webpart.kafka
 
-import com.example.javanoo6.webpart.model.GameRecord
+import com.example.schemes.GameRecordAvro
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 
 @Component
-class MessageProducer(private val kafkaTemplate: KafkaTemplate<String, GameRecord>) {
+class MessageProducer(
+    private val kafkaTemplate2: KafkaTemplate<String, GameRecordAvro>
 
-    fun someMethod(gameRecord: GameRecord) {
-        kafkaTemplate.send("test_topic", gameRecord)
+) {
+    fun someMethod(gameRecord: GameRecordAvro) {
+        kafkaTemplate2.send("test_topic", gameRecord)
     }
+
 
 }

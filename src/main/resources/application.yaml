@@ -2,10 +2,30 @@ spring:
   kafka:
     bootstrap-servers: "localhost:9093"
     consumer:
-      value-deserializer: "org.springframework.kafka.support.serializer.JsonDeserializer"
-      properties:
-        "[spring.json.value.default.type]": "com.example.javanoo6.webpart.model.GameRecord"
-        "[spring.json.trusted.packages]": "com.example.javanoo6"
+
+      value-deserializer: "io.confluent.kafka.serializers.KafkaAvroDeserializer"
+      #      properties:
+      #        "[spring.json.value.default.type]": "com.example.schemes.GameRecordAvro"
+      #        "[spring.json.trusted.packages]": "com.example.schemes"
       group-id: "test_topic"
+      properties:
+        specific.avro.reader: true
     producer:
-      value-serializer: "org.springframework.kafka.support.serializer.JsonSerializer"
+      value-serializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
+    properties:
+      schema:
+        registry:
+          url: "http://localhost:8081"
+
+
+#      spring:
+#  kafka:
+#    bootstrap-servers: "localhost:9093"
+#    consumer:
+#      value-deserializer: "org.springframework.kafka.support.serializer.JsonDeserializer"
+#      properties:
+#        "[spring.json.value.default.type]": "com.example.javanoo6.webpart.model.GameRecord"
+#        "[spring.json.trusted.packages]": "com.example.javanoo6"
+#      group-id: "test_topic"
+#    producer:
+#      value-serializer: "org.springframework.kafka.support.serializer.JsonSerializer"

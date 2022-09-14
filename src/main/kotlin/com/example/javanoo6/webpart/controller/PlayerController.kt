@@ -33,6 +33,7 @@ class PlayerController {
     fun findPlayerByName(@PathVariable name: String): List<Player> {
         return playerService.findPlayerByName(name)
 
+
     }
 
 }

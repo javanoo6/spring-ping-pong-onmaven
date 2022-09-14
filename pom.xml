@@ -15,7 +15,13 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
-		<kotlin.version>1.6.21</kotlin.version>
+		<!--		<kotlin.version>1.6.21</kotlin.version>-->
+
+		<!--		<properties>-->
+		<kotlin.version>1.7.10</kotlin.version>
+		<serialization.version>1.4.0</serialization.version>
+		<!--		</properties>-->
+
 	</properties>
 	<dependencies>
 		<dependency>
@@ -65,17 +71,57 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+			<version>1.11.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer -->
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-avro-serializer</artifactId>
+			<version>5.0.0</version>
+		</dependency>
+
+
+		<!--сериализиция под авро -->
+		<!-- https://mvnrepository.com/artifact/com.github.avro-kotlin.avro4k/avro4k-core -->
+		<!--		<dependency>
+                    <groupId>com.github.avro-kotlin.avro4k</groupId>
+                    <artifactId>avro4k-core</artifactId>
+                    <version>1.6.0</version>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.jetbrains.kotlinx</groupId>
+                    <artifactId>kotlinx-serialization-json</artifactId>
+                    <version>1.4.0</version>
+                </dependency>-->
+		<!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-maven-serialization -->
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-maven-serialization</artifactId>
+			<version>1.7.10</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-maven-allopen -->
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-maven-allopen</artifactId>
+			<version>1.7.10</version>
+		</dependency>
+
 
 	</dependencies>
 
 	<build>
-		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+
+
+		<!--	<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+            <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>-->
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
@@ -91,11 +137,125 @@
 					<dependency>
 						<groupId>org.jetbrains.kotlin</groupId>
 						<artifactId>kotlin-maven-allopen</artifactId>
-						<version>${kotlin.version}</version>
+						<version>1.7.10</version>
 					</dependency>
 				</dependencies>
 			</plugin>
+
+			<!--			<plugin>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-plugin</artifactId>
+                            <version>${kotlin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>compile</id>
+                                    <phase>compile</phase>
+                                    <goals>
+                                        <goal>compile</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration>
+                                <args>
+                                    <arg>-Xjsr305=strict</arg>
+                                </args>
+                                <compilerPlugins>
+                                    <plugin>spring</plugin>
+                                    <plugin>kotlinx-serialization</plugin>
+                                </compilerPlugins>
+                            </configuration>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.jetbrains.kotlin</groupId>
+                                    <artifactId>kotlin-maven-serialization</artifactId>
+                                    <version>1.7.10</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.jetbrains.kotlin</groupId>
+                                    <artifactId>kotlin-maven-allopen</artifactId>
+                                    <version>${kotlin.version}</version>
+                                </dependency>
+                            </dependencies>
+                        </plugin>-->
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<version>1.11.1</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>schema</goal>
+							<goal>induce</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.basedir}/src/main/avro</sourceDirectory>
+							<outputDirectory>${project.basedir}/src/main/java/avro</outputDirectory>
+							<stringType>String</stringType>
+						</configuration>
+
+					</execution>
+
+				</executions>
+			</plugin>
+
+			<!--			<plugin>
+                            <groupId>org.apache.avro</groupId>
+                            <artifactId>avro-maven-plugin</artifactId>
+                            <version>1.11.1</version>
+                            <executions>
+                                <execution>
+                                    <id>schema</id>
+                                    <phase>generate-sources</phase>
+                                    <goals>
+                                        <goal>schema</goal>
+                                        <goal>protocol</goal>
+                                        <goal>idl-protocol</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>-->
+			<!--			<plugin>
+                            <groupId>org.apache.avro</groupId>
+                            <artifactId>avro-maven-plugin</artifactId>
+                            <version>${avro.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>schemas</id>
+                                    <phase>generate-sources</phase>
+                                    <goals>
+                                        <goal>schema</goal>
+                                        <goal>protocol</goal>
+                                        <goal>idl-protocol</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>-->
+
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
 
 </project>

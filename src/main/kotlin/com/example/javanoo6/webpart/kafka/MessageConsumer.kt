@@ -1,6 +1,6 @@
 package com.example.javanoo6.webpart.kafka
 
-import com.example.javanoo6.webpart.model.GameRecord
+import com.example.schemes.GameRecordAvro
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Service
 
@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service
 class MessageConsumer {
 
     @KafkaListener(topics = ["test_topic"])
-    fun consume(message: GameRecord): Unit {
+    fun consume(message: GameRecordAvro) {
 
         println(" message received from topic : $message")
     }
+
 }
